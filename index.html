@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Birthday Divine</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(135deg, #89cff0, #d6eaff); /* Blue gradients */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      overflow: hidden;
+    }
+    .chatbot {
+      width: 350px;
+      background: #ffffff;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      overflow: hidden;
+      padding: 20px;
+    }
+    .chat-header {
+      font-size: 1.5em;
+      font-weight: bold;
+      color: #007bff; /* Blue */
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    .messages {
+      height: 300px;
+      overflow-y: auto;
+      border: 1px solid #ddd;
+      padding: 10px;
+      border-radius: 10px;
+      background: #f0f8ff; /* Light blue background */
+      margin-bottom: 10px;
+    }
+    .message {
+      margin-bottom: 10px;
+    }
+    .bot {
+      color: #555;
+    }
+    .user {
+      color: #007bff;
+      text-align: right;
+    }
+    .input-container {
+      display: flex;
+    }
+    input {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+    button {
+      background: #007bff; /* Blue */
+      color: #fff;
+      border: none;
+      padding: 10px 15px;
+      margin-left: 5px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #0056b3; /* Darker blue */
+    }
+    a {
+      color: #007bff; /* Blue */
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="chatbot">
+    <div class="chat-header">Happy Birthday, Divine! 🎂</div>
+    <div class="messages" id="messages">
+      <div class="message bot">Hi Divine! 🎉</div>
+      <div class="message bot">Guess who’s here to make your day extra special? ❤️</div>
+    </div>
+    <div class="input-container">
+      <input type="text" id="userInput" placeholder="Type something..." />
+      <button onclick="sendMessage()">Send</button>
+    </div>
+  </div>
+
+  <audio id="bgMusic" loop>
+    <source src="./happy-birthday-266285.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    const messagesDiv = document.getElementById('messages');
+    const userInput = document.getElementById('userInput');
+    const bgMusic = document.getElementById('bgMusic');
+    bgMusic.play();
+
+    const responses = [
+      "You make every day so beautiful, Divine. 🌸",
+      "Here's a special poem for you:",
+      `"To Divine, my light and my song,  
+      With you, my heart feels forever strong.  
+      Your smile, a sunrise in my sky,  
+      For you, my love will never die.  
+      Happy Birthday, my sweetest star,  
+      Wherever you are is where I am by far." ❤️`,
+      "I hope this little potato made you smile! 😊",
+    ];
+
+    function sendMessage() {
+      const userText = userInput.value.trim();
+      if (!userText) return;
+
+      // Display user's message
+      const userMessage = document.createElement('div');
+      userMessage.className = 'message user';
+      userMessage.textContent = userText;
+      messagesDiv.appendChild(userMessage);
+
+      // Display bot's response
+      setTimeout(() => {
+        const botMessage = document.createElement('div');
+        botMessage.className = 'message bot';
+        if (responses.length > 0) {
+          botMessage.textContent = responses.shift();
+        } else {
+          botMessage.innerHTML = `Happy Birthday again, Divine! 🎉 <a href="./dist/index.html">Click here for a surprise! 🎁</a>`;
+        }
+        messagesDiv.appendChild(botMessage);
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+      }, 500);
+
+      userInput.value = '';
+    }
+  </script>
+</body>
+</html>
