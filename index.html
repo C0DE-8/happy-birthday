@@ -7,27 +7,40 @@
   <style>
     body {
       font-family: 'Arial', sans-serif;
-      background: linear-gradient(135deg, #89cff0, #d6eaff); /* Blue gradients */
+      margin: 0;
+      height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
-      margin: 0;
-      overflow: hidden;
+      background: linear-gradient(135deg, #89cff0, #d6eaff); /* Blue gradients */
     }
-    .chatbot {
+    .countdown, .chatbot {
       width: 350px;
       background: #ffffff;
       border-radius: 15px;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-      overflow: hidden;
       padding: 20px;
+      text-align: center;
+    }
+    .countdown {
+      display: block;
+    }
+    .chatbot {
+      display: none;
+    }
+    .countdown h1 {
+      color: #007bff; /* Blue */
+      margin-bottom: 20px;
+    }
+    .timer {
+      font-size: 2em;
+      font-weight: bold;
+      color: #333;
     }
     .chat-header {
       font-size: 1.5em;
       font-weight: bold;
       color: #007bff; /* Blue */
-      text-align: center;
       margin-bottom: 10px;
     }
     .messages {
@@ -80,7 +93,14 @@
   </style>
 </head>
 <body>
-  <div class="chatbot">
+  <!-- Countdown Section -->
+  <div class="countdown" id="countdown">
+    <h1>Countdown to Divine's Birthday! 🎉</h1>
+    <div class="timer" id="timer">00:00:00</div>
+  </div>
+
+  <!-- Chatbot Section -->
+  <div class="chatbot" id="chatbot">
     <div class="chat-header">Happy Birthday, Divine! 🎂</div>
     <div class="messages" id="messages">
       <div class="message bot">Hi Divine! 🎉</div>
@@ -92,15 +112,21 @@
     </div>
   </div>
 
+  <!-- Background Music -->
   <audio id="bgMusic" loop>
     <source src="./happy-birthday-266285.mp3" type="audio/mpeg">
   </audio>
 
   <script>
+    const countdownDiv = document.getElementById('countdown');
+    const chatbotDiv = document.getElementById('chatbot');
+    const timerDiv = document.getElementById('timer');
+    const bgMusic = document.getElementById('bgMusic');
     const messagesDiv = document.getElementById('messages');
     const userInput = document.getElementById('userInput');
-    const bgMusic = document.getElementById('bgMusic');
-    bgMusic.play();
+
+    // Target date: 20th December 00:00 Nigerian time (UTC+1)
+    const targetDate = new Date('2024-12-20T00:00:00+01:00');
 
     const responses = [
       "You make every day so beautiful, Divine. 🌸",
@@ -114,6 +140,30 @@
       "I hope this little potato made you smile! 😊",
     ];
 
+    // Countdown logic
+    function updateCountdown() {
+      const now = new Date();
+      const diff = targetDate - now;
+
+      if (diff <= 0) {
+        // Countdown is over, show chatbot
+        countdownDiv.style.display = 'none';
+        chatbotDiv.style.display = 'block';
+        bgMusic.play();
+        clearInterval(countdownInterval); // Stop the interval
+      } else {
+        // Update the timer
+        const hours = Math.floor(diff / (1000 * 60 * 60));
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+        timerDiv.textContent = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+      }
+    }
+
+    // Update countdown every second
+    const countdownInterval = setInterval(updateCountdown, 1000);
+
+    // Chatbot message logic
     function sendMessage() {
       const userText = userInput.value.trim();
       if (!userText) return;
